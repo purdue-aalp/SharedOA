@@ -9,6 +9,9 @@ Shared Object Allocator (SharedOA) is a type-based memory
 allocator that allows objects to make use of inheritance
 and virtual functions to be shared between the CPU and GPU.
 
+We include an example to show how to use SharedOA to create objects.
+{describe the example a little here}
+
 ## Allocator interface
 
 Return a pointer to an object of type Type1 shared between the CPU and GPU:
@@ -27,6 +30,34 @@ my_obj_alloc.toHost()
 ```
 
 ## Compile and run example:
+
+Make the example:
+```bash
+cd example
+make
+```
+
+Run the example:
+```bash
+./main
+```
+
+Output would be like below:
+```
+vtbale [2S2][0]:0x8
+vtbale [2S2][1]:0x10
+total_count 1048576 , total 1048576 , type_size 16
+Objects Creation Done
+Host Call Done
+0x7f7864002188 0x7f7864002160 1048576
+Device Call Done
+0x7f7864002188 0x7f7864002138 1048576
+Host Call Done
+ptr[0].var = -2
+ptr[1].var = -2
+...
+ptr[1023].var = -2 
+```
 
 ## Explain the use of SharedOA in the example:
 
