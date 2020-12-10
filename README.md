@@ -13,8 +13,8 @@ and virtual functions to be shared between the CPU and GPU.
 
 ## Usage Example
 we first alloacte a memory chuck that is shared between CPU and GPU 
-'''
+```
   mem_alloc shared_mem(4ULL * 1024 * 1024 * 1024);
 
 
-'''
+```
