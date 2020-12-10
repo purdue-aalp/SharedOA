@@ -10,7 +10,7 @@ allocator that allows objects to make use of inheritance
 and virtual functions to be shared between the CPU and GPU.
 
 We include an example to show how to use SharedOA to create objects.
-The example contains two classes (S1 and S2), which they both have virtual functions. we create an array of objects of type (S2), and then call the virtual functions on both the CPU and GPU, we call the inc function (on the device ) that increamtes the var by 2. while on the host we call dec that decrements the var by 2. At the end of the execution all the objects should have 0 in the var.
+The example contains two classes (S1 and S2), which they both have virtual functions. we create an array of objects of type (S2), and then call the virtual functions on both the CPU and GPU, we call the inc function twice (on the device ) to increamte the var by 2. while on the host we call dec twice to decrement the var by 2. At the end of the execution all the objects should have 0 in the var.
 
 ## Allocator interface
 
@@ -46,19 +46,21 @@ Output would be like below:
 ```
 vtbale [2S2][0]:0x8
 vtbale [2S2][1]:0x10
-total_count 1048576 , total 1048576 , type_size 16
 Objects Creation Done
 Host Call Done
-0x7f7864002188 0x7f7864002160 1048576
 Device Call Done
-0x7f7864002188 0x7f7864002138 1048576
 Host Call Done
-ptr[0].var = -2
-ptr[1].var = -2
+Device Call Done
+ptr[0].var = 0
+ptr[1].var = 0
 ...
-ptr[1023].var = -2 
+ptr[511].var = 0 
 ```
-
+Here SharedOA shows the indxces of each of the type S2 virtual functions in the Vtable  
+```
+vtbale [2S2][0]:0x8
+vtbale [2S2][1]:0x10
+```
 ## Explain the use of SharedOA in the example:
 
 The example implement the following routine:
