@@ -1,6 +1,8 @@
 # SharedOA
 
 ## Software Prerequisite
+* Ubuntu Linux
+* CUDA 10.1 (Not sure whether works with other versions)
 
 ## Description
 Shared Object Allocator(SharedOA) is a type-based memory
