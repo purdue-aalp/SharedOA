@@ -1,6 +1,6 @@
 # SharedOA
 
-## Software Prerequisite
+## Software prerequisite
 * Ubuntu Linux
 * CUDA 10.1 (Not sure whether works with other versions)
 
@@ -9,7 +9,7 @@ Shared Object Allocator (SharedOA) is a type-based memory
 allocator that allows objects to make use of inheritance
 and virtual functions to be shared between the CPU and GPU.
 
-## Allocator Interface
+## Allocator interface
 
 Return a pointer to an object of type Type1 shared between the CPU and GPU:
 ```cpp
@@ -26,7 +26,9 @@ Patches the virtual function pointers of all objects allocated by SharedOA to th
 my_obj_alloc.toHost()
 ```
 
-## Use Example
+## Compile and run example:
+
+## Explain the use of SharedOA in the example:
 
 The example implement the following routine:
 1. Allocate the memory space for the SharedOA that is shared between CPU and GPU:
