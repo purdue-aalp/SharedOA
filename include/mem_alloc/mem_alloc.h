@@ -122,7 +122,7 @@ public:
 
       return (void *)((char *)header + sizeof(header_t));
     }
-    printf("RETNULL");
+    // printf("RETNULL");
     return NULL;
   }
 
@@ -143,8 +143,8 @@ public:
     header = (header_t *)((char *)(ptr) - sizeof(header_t));
     next_header = header->s.next;
     if (!next_header->s.is_free || next_header->s.size < size_diff) {
-      printf("REALLOC FAILD %d , %d %d %d\n", old_count, new_count,
-             next_header->s.is_free, next_header->s.size);
+    //   printf("REALLOC FAILD %d , %d %d %d\n", old_count, new_count,
+    //          next_header->s.is_free, next_header->s.size);
       return false;
     }
 
@@ -174,8 +174,8 @@ public:
     type_size = _type_size;
     mem_ptr = _ptr;
     total_count = _total; // floor(_total / type_size);
-    printf("total_count %d , total %d , type_size %d \n", total_count, _total,
-           type_size);
+    // printf("total_count %d , total %d , type_size %d \n", total_count, _total,
+    //        type_size);
   }
   void *get_next_mem(unsigned num_of_obj = 1) {
     void *ptr = (void *)((char *)mem_ptr + type_size * count);
@@ -190,17 +190,17 @@ public:
     return (void *)((char *)mem_ptr + type_size * total_count);
   }
   bool is_contiguous_chunk(void *new_mem_ptr) {
-    printf("extend old_mem : %p , new_mem : %p, diff: %p , total_size : "
-           "%x "
-           "total_size_withH : %x expect : %p diff %p \n",
-           mem_ptr, new_mem_ptr, (char *)new_mem_ptr - (char *)mem_ptr,
-           type_size * (total_count),
-           type_size * (total_count) + sizeof(header_t),
-           (char *)mem_ptr + type_size * (total_count) + sizeof(header_t),
-           (char *)new_mem_ptr - (char *)(mem_ptr + type_size * (total_count) +
-                                          sizeof(header_t)));
+    // printf("extend old_mem : %p , new_mem : %p, diff: %p , total_size : "
+    //        "%x "
+    //        "total_size_withH : %x expect : %p diff %p \n",
+    //        mem_ptr, new_mem_ptr, (char *)new_mem_ptr - (char *)mem_ptr,
+    //        type_size * (total_count),
+    //        type_size * (total_count) + sizeof(header_t),
+    //        (char *)mem_ptr + type_size * (total_count) + sizeof(header_t),
+    //        (char *)new_mem_ptr - (char *)(mem_ptr + type_size * (total_count) +
+    //                                       sizeof(header_t)));
     if (((char *)new_mem_ptr -
-         (char *)(mem_ptr + type_size * (total_count) + sizeof(header_t))) %
+         (char *)((char *)mem_ptr + type_size * (total_count) + sizeof(header_t))) %
             sizeof(header_t) ==
         0)
       return true;
@@ -400,10 +400,10 @@ public:
       type = it->second;
       fprintf(stderr, "Type#%d:\n", i);
       fprintf(stderr,
-              "Type Size: %d \t Number of Buckets : %d \t Range Size: %d "
-              "\t Number of Objs : %d\n\n",
-              type->typeSize, type->type_bucket_list->size(), type->range_size,
-              type->num_of_objs);
+            "Type Size: %d \t Number of Buckets : %lu \t Range Size: %u "
+            "\t Number of Objs : %lu\n\n",
+            type->typeSize, type->type_bucket_list->size(), type->range_size,
+            type->num_of_objs);
       total_obj += type->num_of_objs;
       avg_size += type->typeSize * type->num_of_objs;
     }
@@ -643,7 +643,7 @@ public:
       num_blocks = ((*iter)->total_count + block_size - 1) / block_size;
       dim3 threads(block_size, 1, 1);
       dim3 grid(num_blocks, 1, 1);
-      printf("%p %p %d \n", (*iter)->mem_ptr, vptr, (*iter)->total_count);
+    //   printf("%p %p %d \n", (*iter)->mem_ptr, vptr, (*iter)->total_count);
       vptrPatch<<<grid, threads>>>((*iter)->mem_ptr, vptr, (*iter)->type_size,
                                    (*iter)->total_count);
       cudaDeviceSynchronize();

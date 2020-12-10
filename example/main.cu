@@ -1,5 +1,5 @@
 #include "mem_alloc.h"
-#define NUM_OBJ 1024
+#define NUM_OBJ 512
 class S1 {
 public:
   int var;
@@ -50,6 +50,14 @@ int main() {
   for (int i = 0; i < NUM_OBJ; i++)
     ptr[i]->dec();
   printf("Host Call Done\n");
+
+
+
+  my_obj_alloc.toDevice();
+
+  kernel<<<numBlocks, blockSize>>>(ptr);
+  cudaDeviceSynchronize();
+  printf("Device Call Done\n");
 
   for (int i = 0; i < NUM_OBJ; i++)
     printf("ptr[%d].var = %d \n", i, ptr[i]->var);
