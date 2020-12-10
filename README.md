@@ -42,20 +42,23 @@ The example implement the following routine:
 3. use the sharedOA to allocate an array of pointers using calloc.
 Note that we use calloc since we allocate pointers instead of objects:
 ```cpp
-  S1 **ptr = (S1 **)my_obj_alloc.calloc<S1 *>(NUM_OBJ);
+S1 **ptr = (S1 **)my_obj_alloc.calloc<S1 *>(NUM_OBJ);
 ```
 
 4. start instantiating objects using SharedOA ( my_new<Type> )
 ```cpp
-    for (int i = 0; i < NUM_OBJ; i++)
-    ptr[i] = (S1 *)my_obj_alloc.my_new<S2>();
+for (int i = 0; i < NUM_OBJ; i++) {
+  ptr[i] = (S1 *)my_obj_alloc.my_new<S2>();
+}
 ```
+
 5. the virtual functions can only be called from the host side
 To make the virtual function accessable from the device we call toDevice()
-  ```cpp
-    my_obj_alloc.toDevice();
-  ```
+```cpp
+my_obj_alloc.toDevice();
+```
+
 6. To reclaim the CPU accessabilty to the virtual functions , we call toHost()
-  ```cpp
-    my_obj_alloc.toHost();
-  ```
+```cpp
+my_obj_alloc.toHost();
+```
