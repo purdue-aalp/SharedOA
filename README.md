@@ -10,7 +10,7 @@ allocator that allows objects to make use of inheritance
 and virtual functions to be shared between the CPU and GPU.
 
 We include an example to show how to use SharedOA to create objects.
-{describe the example a little here}
+The example contains two classes (S1 and S2), which they both have virtual functions. we create an array of objects of type (S2), and then call the virtual functions on both the CPU and GPU, we call the inc function (on the device ) that increamtes the var by 2. while on the host we call dec that decrements the var by 2. At the end of the execution all the objects should have 0 in the var.
 
 ## Allocator interface
 
