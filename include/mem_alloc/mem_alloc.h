@@ -317,7 +317,7 @@ public:
       for (int ii = 0; ii < FUNC_LEN; ii++) {
         if (vtable[ii] == NULL)
           break;
-        printf("vtbale [%s][%d]:%p\n", typeid(myType).name(), ii, vtable[ii]);
+        printf("vtable [%s][%d]:%p\n", typeid(myType).name(), ii, vtable[ii]);
       }
   }
   template <class myType> range_bucket *add_new_bucket(void *mem_chunk_ptr) {
@@ -610,7 +610,7 @@ public:
         // if (0) {
         //   vtable = &this->range_tree[i].tuble->func[0];
         //   for (int ii = 0; ii < FUNC_LEN; ii++) {
-        //     printf("vtbale[%d]:%p\n", ii, vtable[ii]);
+        //     printf("vtable[%d]:%p\n", ii, vtable[ii]);
         //   }
         // }
       }
