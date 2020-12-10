@@ -49,6 +49,6 @@ To make the virtual function accessable from the device we call toDevice()
     my_obj_alloc.toDevice();
   ```
 To regain the CPU accessabilty to the virtual functions , we call toHost()
-    ```
+  ```
     my_obj_alloc.toHost();
   ```
