@@ -35,6 +35,13 @@ Patches the virtual function pointers of all objects allocated by SharedOA to th
 my_obj_alloc.toHost()
 ```
 
+# Configure system environment
+
+Configure system environment for CUDA 10.1 installed path:
+```bash
+export CUDA_INSTALL_PATH=<cuda-toolkit-path>
+```
+
 ## Compile and run example for SharedOA:
 
 Make the example:
