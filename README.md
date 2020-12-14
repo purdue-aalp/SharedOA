@@ -12,6 +12,9 @@ and virtual functions to be shared between the CPU and GPU.
 We include an example to show how to use SharedOA to create objects.
 The example contains two classes (S1 and S2), which they both have virtual functions. we create an array of objects of type (S2), and then call the virtual functions on both the CPU and GPU, we call the inc function twice (on the device ) to increamte the var by 2. while on the host we call dec twice to decrement the var by 2. At the end of the execution all the objects should have 0 in the var.
 
+We also include two examples to show how to use COAL and TypePointer to instrument virtual function
+on top of SharedOA.
+
 ## Allocator interface
 
 Return a pointer to an object of type Type1 shared between the CPU and GPU:
