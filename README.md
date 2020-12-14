@@ -29,11 +29,11 @@ Patches the virtual function pointers of all objects allocated by SharedOA to th
 my_obj_alloc.toHost()
 ```
 
-## Compile and run example:
+## Compile and run example for SharedOA:
 
 Make the example:
 ```bash
-cd example
+cd example/SharedOA
 make
 ```
 
@@ -99,13 +99,31 @@ my_obj_alloc.toHost();
 ```
 
 ## Compile and run example for COAL and TypePointer
-to use with coal 
+COAL and TypePointer need scripts to modify PTX instructions in the binary. User need to define script path with
+$TRANSFORM_SCRIPT environment variable.
+To use with COAL:
+```bash
 export TRANSFORM_SCRIPT= point them to https://github.com/brad-mengchi/asplos_2021_ae/tree/master/util/ptx_transform_coal
-for tp 
-export TRANSFORM_SCRIPT= point them tohttps://github.com/brad-mengchi/asplos_2021_ae/tree/master/util/ptx_transform_tp
-
-
 ```
+To use with TypePointer:
+```bash
+export TRANSFORM_SCRIPT= point them tohttps://github.com/brad-mengchi/asplos_2021_ae/tree/master/util/ptx_transform_tp
+```
+
+Make the example:
+```bash
+cd example/COAL
+# or cd example/TP for TypePointer 
+make
+```
+
+Run the example:
+```bash
+./main_COAL
+# ./main_TP for TypePointer
+```
+
+The makefile
 # Generate dryrun file
 get the commands used by nvcc to compile the code , we focus only on commands that cpmpile the ptx beacause we want to hack it
 	nvcc --dryrun --keep $(NVOPTS) $(OPTS) $(CUOPTS) $(CUSRC)  $(INC) -o $(EXECUTABLE) $(LIBS) 2> dryrun.sh 

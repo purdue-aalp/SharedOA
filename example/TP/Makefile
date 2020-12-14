@@ -29,7 +29,7 @@ all: $(OBJS)
 	mv dryrun1.sh dryrun.sh
 	nvcc  --keep   $(NVOPTS) $(OPTS) $(CUOPTS) $(CUSRC)  $(INC) -o $(EXECUTABLE) $(LIBS) 
 	$(PTX_GEN)/generator.py main.ptx
-	cp main.ptx_coal main.ptx
+	cp main.ptx_tp main.ptx
 	sh dryrun.sh
 	rm -f *cpp* *fatbin* *cudafe*  *cubin* *.o *.module_id *dlink*
 
