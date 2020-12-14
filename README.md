@@ -44,14 +44,14 @@ Run the example:
 
 Output would be like below:
 ```
-vtbale [2S2][0]:0x8
-vtbale [2S2][1]:0x10
+vtable [2S2][0]:0x8
+vtable [2S2][1]:0x10
 Objects Creation Done
 Host Call Done
 Device Call Done
 Host Call Done
 Device Call Done
-ptr[0].var = 0
+ptr[0].var = 0 
 ptr[1].var = 0
 ...
 ptr[511].var = 0 
