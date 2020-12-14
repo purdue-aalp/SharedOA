@@ -98,10 +98,10 @@ my_obj_alloc.toDevice();
 my_obj_alloc.toHost();
 ```
 
-# Compile and run example for COAL and TypePointer
+## Compile and run example for COAL and TypePointer
 
 
-# Explain how to apply COAL with SharedOA
+## Explain how to apply COAL with SharedOA
 
 
-# Explain how to apply TypePointer with SharedOA
+## Explain how to apply TypePointer with SharedOA
