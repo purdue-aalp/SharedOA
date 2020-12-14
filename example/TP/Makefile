@@ -8,7 +8,7 @@ VARIANT ?= DEFAULT
 EXECUTABLE = ./$(BASEEXE)
 CUSRC += *.cu 
 OPTS = -O3
-PTX_GEN =  $(TRANSFORM_SCRIPT)
+PTX_GEN =  $(TRANSFORM_SCRIPT)/util/ptx_transform_tp
 
 CUOPTS = $(GENCODE_SM70)
 INC = -I../../include/mem_alloc

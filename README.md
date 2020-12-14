@@ -112,15 +112,11 @@ my_obj_alloc.toHost();
 ```
 
 ## Compile and run example for COAL and TypePointer
-COAL and TypePointer need scripts to modify PTX instructions in the binary. User need to define script path with
-$TRANSFORM_SCRIPT environment variable.
-To use with COAL:
+COAL and TypePointer need scripts to modify PTX instructions in the binary. User need to define script repository path with
+$TRANSFORM_SCRIPT environment variable:
+
 ```bash
-export TRANSFORM_SCRIPT=<asplos_2021_ae folder>/tree/master/util/ptx_transform_coal
-```
-To use with TypePointer:
-```bash
-export TRANSFORM_SCRIPT=<asplos_2021_ae folder>/tree/master/util/ptx_transform_tp
+export TRANSFORM_SCRIPT=<asplos_2021_ae folder>
 ```
 
 Make the example:
