@@ -144,50 +144,60 @@ Note that the makefile will use nvcc to generate per-step compilation script, mo
   we use dryrun to recompile the script after hacking
 	sh dryrun.sh
 	rm -f *cpp* *fatbin* *cudafe*  *cubin* *.o *.module_id *dlink*
-  ```
+```
 
 ## Explain how to apply COAL with SharedOA
-to apply COAL, we need to define these manged variables 
-```
+To apply COAL, we need to define these manged variables:
+
+```cpp
 __managed__ range_tree_node *range_tree;
 __managed__ unsigned tree_size;
 __managed__ void *temp_coal;
 ```
-after we done with obj creation 
-we ask the sharedoa to create the vtable tree and provide pointers to the vtable tree and the tree size
-```
+
+After done with object creation, we ask the SharedOA to create the VTable tree
+and provide pointers to the vtable tree and the tree size:
+
+```cpp
   my_obj_alloc.create_tree();
   // we get a pointer to the tree
   range_tree = my_obj_alloc.get_range_tree();
   // we get the size of the tree
   tree_size = my_obj_alloc.get_tree_size();
-  ```
-now, for every vfun that we need to insert this code before the call
 ```
+
+Now, for every vfun that we need to insert this code before the call:
+
+```cpp
 vtable = get_vfunc(ptr, range_tree, tree_size);  temp_coal = vtable[0]; // 0 here means the first vfun
 ```
-to make our life easier and cleaner ,  we suggest that you define macros for each vfun 
-similer to this one 
-```
+
+To make our life easier and cleaner, we suggest that you define macros for each vfun  similer to this one:
+
+```cpp
 #define COAL_S1_inc(ptr){   vtable = get_vfunc(ptr, range_tree, tree_size);  temp_coal = vtable[0]; }
 ```
-the indices of the vfun follows the same order that they are defined in the base class. we could also check the ptx to verify 
-```
+
+The indices of the vfun follows the same order that they are defined in the base class. we could also check the PTX to verify:
+
+```cpp
 .global .align 8 .u64 _ZTV2S2[4] = {0, 0, _ZN2S23incEv, _ZN2S23decEv};
 
 ```
-we ignore the fisrt two zeros , we start counting after that 
-so 
-_ZN2S23incEv will have index 0 , and _ZN2S23decEv will have index 1
-now , inside each kerenl , we need to define this variable 
-```
+
+We ignore the fisrt two zeros and start counting after that.
+_ZN2S23incEv will have index 0, and _ZN2S23decEv will have index 1.
+Now, we need to define this variable inside each kernel:
+
+```cpp
   void **vtable;
- ``` 
-  example 
-  ```cpp
+``` 
+
+An example for vfun inc():
+```cpp
 __global__ void kernel(S1 **ptr) {
   int tid = threadIdx.x + blockDim.x * blockIdx.x;
-  // this variable must be defined in every kerenl that uses COAL
+  // this variable must be defined in every kernel that uses COAL
   void **vtable;
   if (tid < NUM_OBJ) {
     COAL_S1_inc(ptr[tid]); // before the call to inc() , we need to insert the code or just use the macro
