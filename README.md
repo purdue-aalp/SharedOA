@@ -103,11 +103,11 @@ COAL and TypePointer need scripts to modify PTX instructions in the binary. User
 $TRANSFORM_SCRIPT environment variable.
 To use with COAL:
 ```bash
-export TRANSFORM_SCRIPT= point them to https://github.com/brad-mengchi/asplos_2021_ae/tree/master/util/ptx_transform_coal
+export TRANSFORM_SCRIPT=<asplos_2021_ae folder>/tree/master/util/ptx_transform_coal
 ```
 To use with TypePointer:
 ```bash
-export TRANSFORM_SCRIPT= point them tohttps://github.com/brad-mengchi/asplos_2021_ae/tree/master/util/ptx_transform_tp
+export TRANSFORM_SCRIPT=<asplos_2021_ae folder>/tree/master/util/ptx_transform_tp
 ```
 
 Make the example:
