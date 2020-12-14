@@ -1,4 +1,4 @@
-# SharedOA
+# SharedOA, COAL and TypePointer
 
 ## Software prerequisite
 * Ubuntu Linux
@@ -97,3 +97,11 @@ my_obj_alloc.toDevice();
 ```cpp
 my_obj_alloc.toHost();
 ```
+
+# Compile and run example for COAL and TypePointer
+
+
+# Explain how to apply COAL with SharedOA
+
+
+# Explain how to apply TypePointer with SharedOA
