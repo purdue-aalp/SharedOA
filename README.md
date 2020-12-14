@@ -129,6 +129,37 @@ get the commands used by nvcc to compile the code , we focus only on commands th
   
   ```
 ## Explain how to apply COAL with SharedOA
+to apply COAL, we need to define these manged variables ,
+__managed__ range_tree_node *range_tree;
+__managed__ unsigned tree_size;
+__managed__ void *temp_coal;
+after we done with obj creation 
+we ask the sharedoa to create the vtable tree and provide pointers to the vtable tree and the tree size
+  my_obj_alloc.create_tree();
+  // we get a pointer to the tree
+  range_tree = my_obj_alloc.get_range_tree();
+  // we get the size of the tree
+  tree_size = my_obj_alloc.get_tree_size();
+now, for every vfun that we need to insert this code before the call
+vtable = get_vfunc(ptr, range_tree, tree_size);  temp_coal = vtable[0]; // 0 here means the first vfun
+
+to make our life easier and cleaner ,  we suggest that you define macros for each vfun 
+similer to this one 
+#define COAL_S1_inc(ptr){   vtable = get_vfunc(ptr, range_tree, tree_size);  temp_coal = vtable[0]; }
+
+now , inside each kerenl , we need to define this variable 
+  void **vtable;
+  
+  example 
+__global__ void kernel(S1 **ptr) {
+  int tid = threadIdx.x + blockDim.x * blockIdx.x;
+  // this variable must be defined in every kerenl that uses COAL
+  void **vtable;
+  if (tid < NUM_OBJ) {
+    COAL_S1_inc(ptr[tid]); before the call to inc() , we need to insert the code or just use the macro
+    ptr[tid]->inc(); 
+  }
+}
 
 
 ## Explain how to apply TypePointer with SharedOA
