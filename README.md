@@ -123,9 +123,9 @@ Run the example:
 # ./main_TP for TypePointer
 ```
 
-The makefile
-# Generate dryrun file
-get the commands used by nvcc to compile the code , we focus only on commands that cpmpile the ptx beacause we want to hack it
+Note that the makefile will use nvcc to generate per-step compilation script, modify PTX and then use the script to rebuild the binary like below:
+```makefile
+  #get the commands used by nvcc to compile the code , we focus only on commands that cpmpile the ptx beacause we want to hack it
 	nvcc --dryrun --keep $(NVOPTS) $(OPTS) $(CUOPTS) $(CUSRC)  $(INC) -o $(EXECUTABLE) $(LIBS) 2> dryrun.sh 
 	# Remove all lines before/including cicc
 	sed -i '1,/cicc/d' dryrun.sh
@@ -144,8 +144,8 @@ get the commands used by nvcc to compile the code , we focus only on commands th
   we use dryrun to recompile the script after hacking
 	sh dryrun.sh
 	rm -f *cpp* *fatbin* *cudafe*  *cubin* *.o *.module_id *dlink*
-  
   ```
+
 ## Explain how to apply COAL with SharedOA
 to apply COAL, we need to define these manged variables 
 ```
