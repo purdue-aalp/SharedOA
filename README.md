@@ -153,6 +153,14 @@ similer to this one
 ```
 #define COAL_S1_inc(ptr){   vtable = get_vfunc(ptr, range_tree, tree_size);  temp_coal = vtable[0]; }
 ```
+the indices of the vfun follows the same order that they are defined in the base class. we could also check the ptx to verify 
+```
+.global .align 8 .u64 _ZTV2S2[4] = {0, 0, _ZN2S23incEv, _ZN2S23decEv};
+
+```
+we ignore the fisrt two zeros , we start counting after that 
+so 
+_ZN2S23incEv will have index 0 , and _ZN2S23decEv will have index 1
 now , inside each kerenl , we need to define this variable 
 ```
   void **vtable;
