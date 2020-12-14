@@ -71,8 +71,8 @@ ptr[511].var = 0
 ```
 Here SharedOA shows the indces of each of the type S2 virtual functions in the Vtable  
 ```
-vtbale [2S2][0]:0x8
-vtbale [2S2][1]:0x10
+vtable [2S2][0]:0x8
+vtable [2S2][1]:0x10
 ```
 ## Explain the use of SharedOA in the example:
 
