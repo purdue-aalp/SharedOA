@@ -179,3 +179,55 @@ __global__ void kernel(S1 **ptr) {
 ```
 
 ## Explain how to apply TypePointer with SharedOA
+applying TP is similar to COAL, 
+we need to define these two variables
+```cpp
+__managed__ obj_info_tuble *vfun_table; // to hold a pointer to vtable
+__managed__ void *temp_TP; // used by the TP vfuns call macros
+
+```
+we ask the sharedoa to create the vtable 
+
+```cpp
+  // after we get done with creating the objects
+  // we ask the SharedOA to create the vfun Table for TP
+  my_obj_alloc.create_table();
+
+  // we get a pointer to vtable
+  vfun_table = my_obj_alloc.get_vfun_table();
+
+```
+now, for every vfun that we need to insert this code before the call
+```
+                                                                             
+    vtable = get_vfunc_type(ptr, vfun_table);                                  
+    temp_TP = vtable[0];                                                       
+  
+```
+to make our life easier and cleaner ,  we suggest that you define macros for each vfun 
+similer to this one 
+```
+#define TP_S1_inc(ptr)                                                         \
+  {                                                                            \
+    vtable = get_vfunc_type(ptr, vfun_table);                                  \
+    temp_TP = vtable[0];                                                       \
+  }
+```
+
+now , inside each kerenl , we need to define this variable 
+```
+  void **vtable;
+ ``` 
+  example 
+  ```cpp
+__global__ void kernel(S1 **ptr) {
+  int tid = threadIdx.x + blockDim.x * blockIdx.x;
+  // this variable must be defined in every kerenl that uses COAL
+  void **vtable;
+  if (tid < NUM_OBJ) {
+    S1 * obPtr = ptr[tid];
+    TP_S1_inc(obPtr); // we insert the code , or basically use the macros
+    CLEANPTR(obPtr,S1 *)->inc(); // what is differnt here that we need to clean the pointer using CLEANPTR macro provided by sharedOA , we pass the pointer and the type of the pointer 
+  }
+}
+```
