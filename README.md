@@ -123,27 +123,26 @@ Run the example:
 # ./main_TP for TypePointer
 ```
 
-Note that the makefile will use nvcc to generate per-step compilation script, modify PTX and then use the script to rebuild the binary like below:
+Note that the makefile will use nvcc to generate per-step compilation script, modify PTX and then use the script to rebuild the binary. NO NEED to run below since makefile will run them:
 ```makefile
-  #get the commands used by nvcc to compile the code , we focus only on commands that cpmpile the ptx beacause we want to hack it
-	nvcc --dryrun --keep $(NVOPTS) $(OPTS) $(CUOPTS) $(CUSRC)  $(INC) -o $(EXECUTABLE) $(LIBS) 2> dryrun.sh 
-	# Remove all lines before/including cicc
-	sed -i '1,/cicc/d' dryrun.sh
-	sed -i '/cicc/d' dryrun.sh
-	# Remove rm line
-	sed -i '/rm/d' dryrun.sh
-	# Remove leading comment
-	cut -c 3- dryrun.sh > dryrun1.sh
-	mv dryrun1.sh dryrun.sh
+# use nvcc to generate command compile the code , we focus only on commands that compile the ptx beacause we want to hack it
+nvcc --dryrun --keep $(NVOPTS) $(OPTS) $(CUOPTS) $(CUSRC)  $(INC) -o $(EXECUTABLE) $(LIBS) 2> dryrun.sh 
+# Remove all lines before/including cicc
+sed -i '1,/cicc/d' dryrun.sh
+sed -i '/cicc/d' dryrun.sh
+# Remove rm line
+sed -i '/rm/d' dryrun.sh
+# Remove leading comment
+cut -c 3- dryrun.sh > dryrun1.sh
+mv dryrun1.sh dryrun.sh
   
-  // now we generte the ptx using nvcc with --keep 
-	nvcc  --keep   $(NVOPTS) $(OPTS) $(CUOPTS) $(CUSRC)  $(INC) -o $(EXECUTABLE) $(LIBS)
-  // we use our ptx tool to hack the vfun calls in the ptx
-	$(PTX_GEN)/generator.py main.ptx
-	cp main.ptx_coal main.ptx
-  we use dryrun to recompile the script after hacking
-	sh dryrun.sh
-	rm -f *cpp* *fatbin* *cudafe*  *cubin* *.o *.module_id *dlink*
+# use ptx scripts to hack the vfun calls in the ptx
+$(PTX_GEN)/generator.py main.ptx
+cp main.ptx_coal main.ptx
+#we use dryrun to recompile the script after hacking
+sh dryrun.sh
+# clean up intermediate files
+rm -f *cpp* *fatbin* *cudafe*  *cubin* *.o *.module_id *dlink*
 ```
 
 ## Explain how to apply COAL with SharedOA
@@ -207,14 +206,15 @@ __global__ void kernel(S1 **ptr) {
 ```
 
 ## Explain how to apply TypePointer with SharedOA
-applying TP is similar to COAL, 
-we need to define these two variables
+
+Applying TP is similar to COAL, we need to define these two variables:
+
 ```cpp
 __managed__ obj_info_tuble *vfun_table; // to hold a pointer to vtable
 __managed__ void *temp_TP; // used by the TP vfuns call macros
-
 ```
-we ask the sharedoa to create the vtable 
+
+we ask the SharedOA to create the VTable:
 
 ```cpp
   // after we get done with creating the objects
@@ -223,18 +223,18 @@ we ask the sharedoa to create the vtable
 
   // we get a pointer to vtable
   vfun_table = my_obj_alloc.get_vfun_table();
+```
 
-```
-now, for every vfun that we need to insert this code before the call
-```
-                                                                             
+Now, for every vfun that we need to insert this code before the call:
+```cpp                                                                       
     vtable = get_vfunc_type(ptr, vfun_table);                                  
     temp_TP = vtable[0];                                                       
-  
 ```
-to make our life easier and cleaner ,  we suggest that you define macros for each vfun 
-similer to this one 
-```
+
+To make our life easier and cleaner, we suggest that you define macros for each vfun 
+similer to this one:
+
+```cpp
 #define TP_S1_inc(ptr)                                                         \
   {                                                                            \
     vtable = get_vfunc_type(ptr, vfun_table);                                  \
@@ -242,12 +242,15 @@ similer to this one
   }
 ```
 
-now , inside each kerenl , we need to define this variable 
-```
+Now we need to define this variable inside each kernel:
+
+```cpp
   void **vtable;
- ``` 
-  example 
-  ```cpp
+```
+
+An example for vfun inc():
+
+```cpp
 __global__ void kernel(S1 **ptr) {
   int tid = threadIdx.x + blockDim.x * blockIdx.x;
   // this variable must be defined in every kerenl that uses COAL
