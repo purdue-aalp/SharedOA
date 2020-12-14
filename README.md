@@ -1,8 +1,10 @@
 # SharedOA, COAL and TypePointer
 
 ## Software prerequisite
-* Ubuntu Linux
-* CUDA 10.1 (Not sure whether works with other versions)
+* Ubuntu 18.04.5 LTS Linux
+* git
+* Python 2.7
+* CUDA 10.1: https://developer.nvidia.com/cuda-10.1-download-archive-base
 
 ## Description
 Shared Object Allocator (SharedOA) is a type-based memory
