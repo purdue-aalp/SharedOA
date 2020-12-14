@@ -5,7 +5,7 @@
 * git
 * Python 2.7
 * CUDA 10.1: https://developer.nvidia.com/cuda-10.1-download-archive-base
-* https://github.com/brad-mengchi/asplos_2021_ae
+* Transform script for COAL and TypePointer: https://github.com/brad-mengchi/asplos_2021_ae
 
 ## Description
 Shared Object Allocator (SharedOA) is a type-based memory
