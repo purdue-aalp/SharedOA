@@ -172,7 +172,7 @@ __global__ void kernel(S1 **ptr) {
   // this variable must be defined in every kerenl that uses COAL
   void **vtable;
   if (tid < NUM_OBJ) {
-    COAL_S1_inc(ptr[tid]); before the call to inc() , we need to insert the code or just use the macro
+    COAL_S1_inc(ptr[tid]); // before the call to inc() , we need to insert the code or just use the macro
     ptr[tid]->inc(); 
   }
 }
