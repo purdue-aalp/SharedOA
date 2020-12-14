@@ -137,18 +137,22 @@ __managed__ void *temp_coal;
 ```
 after we done with obj creation 
 we ask the sharedoa to create the vtable tree and provide pointers to the vtable tree and the tree size
+```
   my_obj_alloc.create_tree();
   // we get a pointer to the tree
   range_tree = my_obj_alloc.get_range_tree();
   // we get the size of the tree
   tree_size = my_obj_alloc.get_tree_size();
+  ```
 now, for every vfun that we need to insert this code before the call
+```
 vtable = get_vfunc(ptr, range_tree, tree_size);  temp_coal = vtable[0]; // 0 here means the first vfun
-
+```
 to make our life easier and cleaner ,  we suggest that you define macros for each vfun 
 similer to this one 
+```
 #define COAL_S1_inc(ptr){   vtable = get_vfunc(ptr, range_tree, tree_size);  temp_coal = vtable[0]; }
-
+```
 now , inside each kerenl , we need to define this variable 
 ```
   void **vtable;
